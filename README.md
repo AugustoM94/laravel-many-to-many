@@ -201,4 +201,21 @@ Route::fallback(function() {
     return redirect()->route('admin.dashboard');
 });
 
+
+php artisan storage:link
+
+
+#migration relatione one-to-many
+
+fare una migration update con
+#up
+  $table->foreign('user_id')
+                 ->references('id')
+                 ->on('users')
+                 ->cascadeOnDelete();
+
+#down
+$table->dropForeign('projects_user_id_foreign');
+$table->dropColumn('user_id');
+
 ```

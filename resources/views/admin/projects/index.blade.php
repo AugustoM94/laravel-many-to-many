@@ -13,8 +13,8 @@
             <thead>
                 <tr>
                     <th>Title</th>
-                    <th>Actions</th>
-                    <th>Additional Links</th> <!-- Nuova colonna per i link aggiuntivi -->
+                    <th>Link</th>
+                    <th>Action</th> 
                 </tr>
             </thead>
             <tbody>

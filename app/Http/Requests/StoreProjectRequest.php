@@ -24,9 +24,10 @@ class StoreProjectRequest extends FormRequest
         return [
             'title' => ['required', 'min:3', 'max:200', 'unique:projects'],
             'body' => ['nullable'],
-            'img' => ['nullable', 'image'],
-            'link' => 'url:https',
-        ];
+            'img' => ['nullable', 'image', 'max:1024'],
+            'link' => ['url:https'],
+           'category_id' => ['nullable', 'exists:categories,id'],
+    ];
     }
 
     public function messages()
@@ -36,7 +37,7 @@ class StoreProjectRequest extends FormRequest
             'title.min' => 'Il titolo deve avere almeno :min caratteri',
             'title.max' => 'Il titolo deve avere massimo :max caratteri',
             'title.unique' => 'Questo titolo esiste già',
-            'img.image' => 'L\'immagine deve essere di tipo image',
+            'img.image' => 'L\'immagine deve essere massimo 1MB',
         ];
     }
 }

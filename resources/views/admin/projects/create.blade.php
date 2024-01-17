@@ -12,6 +12,7 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
     </div>
+    
          <div class="mb-3 text-white">
             <label for="link">link</label>
             <input type="url" class="form-control @error('link') is-invalid @enderror" name="link" id="link"               >

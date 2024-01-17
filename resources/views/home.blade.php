@@ -4,7 +4,7 @@
         @auth
             <h1>Benvenuto admin {{ Auth::user()->name }}</h1>
         @else
-            <h1>Bentornato {{ Auth::user()->name }}</h1>
+            <h1>Bentornato</h1>
         @endauth
     </section>
 @endsection
