@@ -27,6 +27,7 @@ class StoreProjectRequest extends FormRequest
             'img' => ['nullable', 'image', 'max:1024'],
             'link' => ['url:https'],
            'category_id' => ['nullable', 'exists:categories,id'],
+           'tehcnologies' => ['nullable']
     ];
     }
 

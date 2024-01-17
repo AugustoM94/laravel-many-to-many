@@ -28,6 +28,7 @@ class UpdateProjectRequest extends FormRequest
             'img' => ['nullable', 'image'],
             'link' => ['url:https'],
             'category_id' => ['nullable', 'exists:categories,id'],
+            'tehcnologies' => ['nullable'],
         ];
     }
 

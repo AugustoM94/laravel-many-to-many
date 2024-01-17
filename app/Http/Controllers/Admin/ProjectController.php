@@ -54,6 +54,9 @@ class ProjectController extends Controller
             $formData['technologies'] = implode(',', $request->input('technologies'));
         }
         $project = Project::create($formData);
+        if ($project->has('technologies')) {
+            $project->technologies()->attach($request->technologies);
+        }
 
         return redirect()->route('admin.projects.index', $project->slug);
     }
@@ -76,7 +79,7 @@ class ProjectController extends Controller
         $categories = Category::all();
         $technologies = config('technologies.key');
 
-        return view('admin.projects.edit', compact('project', 'categories', 'technologies'));
+        return view('admin.projects.edit', compact('project', 'categories'));
     }
 
     /**
