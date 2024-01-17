@@ -7,6 +7,13 @@
             <div class="card-body">
                 <h5 class="card-title">{{ $project->title }}</h5>
                 <p class="card-text">{{ $project->body }}</p>
+                <p>{{$project->category ? $project->category->name : 'No category'}}</p>
+                
+                @forelse($project->technologies as $technology)
+                    <p>{{ $technology->name }} <i class="{{ $technology->icon }}"></i></p>
+                    @empty
+                    <p>No technologies</p>
+                @endforelse
                 <a href="{{ route('admin.projects.edit', $project->category->slug) }}" class="btn btn-danger">Edit</a>
             </div>
         </div>

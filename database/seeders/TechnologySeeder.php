@@ -13,18 +13,13 @@ class TechnologySeeder extends Seeder
      */
     public function run(): void
     {
-        $technologies = [
-            'laravel',
-            'php',
-            'javascript',
-            'css',
-            'html',
-        ];
+        $technologies = config('technologies.key');
 
         foreach ($technologies as $technology) {
             $new_technology = new Technology();
-            $new_technology->name = $technology;
-            $new_technology->slug = Str::slug($technology, '-');
+            $new_technology->name = $technology['name'];
+            $new_technology->icon = $technology['icon'];
+            $new_technology->slug = Str::slug($technology['name'], '-');
             $new_technology->save();
         }
     }

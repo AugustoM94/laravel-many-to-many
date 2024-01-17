@@ -7,6 +7,8 @@ use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Category;
 use App\Models\Project;
+use App\Models\Technology;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -16,11 +18,19 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $projects = Project::all();
+        $technologies = config('technologies.key');
 
-        return view('admin.projects.index', compact('projects'));
+        if ($request->query('technologies')) {
+            $projects = Project::where('technologies', 'like', '%'.$request->query('technologies').'%')->get();
+        } elseif ($request->query('search')) {
+            $projects = Project::where('title', 'like', '%'.$request->query('search').'%')->get();
+        } else {
+            $projects = Project::all();
+        }
+
+        return view('admin.projects.index', compact('projects', 'technologies'));
     }
 
     /**
@@ -29,7 +39,8 @@ class ProjectController extends Controller
     public function create()
     {
         $categories = Category::all();
-        $technologies = config('technologies.key');
+        // $technologies = config('technologies.key');
+        $technologies = Technology::all();
 
         return view('admin.projects.create', compact('categories', 'technologies'));
     }
@@ -39,7 +50,6 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        $categories = Category::all();
         $formData = $request->validated();
         $slug = Str::slug($formData['title'], '-');
         $formData['slug'] = $slug;
@@ -50,15 +60,18 @@ class ProjectController extends Controller
             $path = Storage::put('uploads', $request->file('img'));
             $formData['img'] = $path;
         }
-        if ($request->input('technologies')) {
+        /*
+        if($request->input('technologies')){
             $formData['technologies'] = implode(',', $request->input('technologies'));
-        }
+        } */
+
         $project = Project::create($formData);
-        if ($project->has('technologies')) {
+
+        if ($request->has('technologies')) {
             $project->technologies()->attach($request->technologies);
         }
 
-        return redirect()->route('admin.projects.index', $project->slug);
+        return redirect()->route('admin.projects.index');
     }
 
     /**
@@ -66,8 +79,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        $project->technologies = explode(',', $project->technologies);
-
+        // $project->technologies = explode(',', $project->technologies);
         return view('admin.projects.show', compact('project'));
     }
 
@@ -77,9 +89,10 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $categories = Category::all();
-        $technologies = config('technologies.key');
+        // $technologies = config('technologies.key');
+        $technologies = Technology::all();
 
-        return view('admin.projects.edit', compact('project', 'categories'));
+        return view('admin.projects.edit', compact('project', 'categories', 'technologies'));
     }
 
     /**
@@ -99,12 +112,20 @@ class ProjectController extends Controller
             $path = Storage::put('uploads', $request->file('img'));
             $formData['img'] = $path;
         }
-        if ($request->input('technologies')) {
+        /*
+        if($request->input('technologies')){
             $formData['technologies'] = implode(',', $request->input('technologies'));
-        } else {
+        }else{
             $formData['technologies'] = '';
-        }
+        } */
+
         $project->update($formData);
+
+        if ($request->has('technologies')) {
+            $project->technologies()->sync($request->technologies);
+        } else {
+            $project->technologies()->detach();
+        }
 
         return to_route('admin.projects.show', $project);
     }
@@ -117,6 +138,8 @@ class ProjectController extends Controller
         if ($project->img) {
             Storage::delete($project->img);
         }
+
+        $project->technologies()->detach();
 
         $project->delete();
 

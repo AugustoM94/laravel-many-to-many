@@ -26,6 +26,7 @@
                             <a href="{{ route('admin.projects.show', $project) }}" class="btn btn-primary"><i class="fa-solid fa-eye"></i></a>
                             <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></a>
                             <form action="{{ route('admin.projects.destroy', $project) }}" method="POST">
+                             
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>

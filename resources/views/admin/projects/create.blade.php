@@ -46,6 +46,16 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
     </div>
+     <div class="mb-3 text-white">
+            @foreach ($technologies as $technology)
+                <input type="checkbox" class="mx-2 @error('technologies') is-invalid @enderror" name="technologies[]" id="technologies" value="{{ $technology->id }}" {{ in_array($technology->id, old('technologies', [])) ? 'checked' : '' }}>
+                <label for="technologies">{{ $technology->name }} <i class="{{ $technology->icon }}"></i></label>
+            @endforeach
+            @error('technologies')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+  </div>
+
     <button type="submit" class="btn btn-success">Save</button>
     <button type="reset" class="btn btn-primary">Reset</button>
 
