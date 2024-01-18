@@ -27,7 +27,7 @@ class ProjectController extends Controller
         } elseif ($request->query('search')) {
             $projects = Project::where('title', 'like', '%'.$request->query('search').'%')->get();
         } else {
-            $projects = Project::all();
+            $projects = Project::paginate(3);
         }
 
         return view('admin.projects.index', compact('projects', 'technologies'));
