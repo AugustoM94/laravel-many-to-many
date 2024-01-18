@@ -14,7 +14,7 @@
                 <tr>
                     <th>Title</th>
                     <th>Link</th>
-                    <th>Action</th> 
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,16 +26,16 @@
                             <a href="{{ route('admin.projects.show', $project) }}" class="btn btn-primary"><i class="fa-solid fa-eye"></i></a>
                             <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></a>
                             <form action="{{ route('admin.projects.destroy', $project) }}" method="POST">
-                             
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
+                                <button type="submit" class="btn btn-danger mt-1"><i class="fa-solid fa-trash"></i></button>
                             </form>
                         </td>
-                      
+
                     </tr>
                 @endforeach
             </tbody>
         </table>
+        {{$projects->links('vendor.pagination.bootstrap-5')}}
     </section>
 @endsection
